@@ -84,5 +84,5 @@ print(hypotenuse)
 # 16. 半径5の球の体積を求めてください
 radius_sphere = 5 
 # ここにコードを書いてください
-volume_sphere = 4 / 3 radius_sphere ** 3 * math.pi
+volume_sphere = 4 / 3 * radius_sphere ** 3 * math.pi
 print(volume_sphere)
