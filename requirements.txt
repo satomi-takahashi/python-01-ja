@@ -1,0 +1,10 @@
+# requirements without version specifiers
+pytest
+requests
+numpy
+pandas
+matplotlib
+seaborn
+plotly
+openpyxl
+scikit-learn
