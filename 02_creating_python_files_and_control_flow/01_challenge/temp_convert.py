@@ -1,11 +1,11 @@
 def convert():
-    temp = float(input("Enter the room temperature")) #20
-    unit = str(input("Enter the unit 'f' for Fahrenheit or 'C' for Celcius")) # f or c
-    unit = unit.lower()
-    if unit == "f": 
-        result = (temp-32) * 5/9
-    elif unit == "c":
-        result = (c * 1.8) +32
-    return temp
-
+    temp = float(input("Enter the room temperature:")) #20
+    unit = str(input("Enter the unit 'f' for Fahrenheit or 'c' for Celcius:")) # f or c
+    converted_temp = 0
+    if unit == 'f' : 
+        converted_temp = (temp - 32) * 5/9
+    elif unit == 'c' :
+        converted_temp = (temp * 9/5) + 32
+    return converted_temp
+    
 convert()
