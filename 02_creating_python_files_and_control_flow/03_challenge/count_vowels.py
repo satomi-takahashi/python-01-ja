@@ -10,5 +10,4 @@ def count_vowels():
 
     print("Enter a string: " + userinput)
     print("Number of vowels: " + result) 
-
 count_vowels()
