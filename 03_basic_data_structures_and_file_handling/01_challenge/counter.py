@@ -12,9 +12,8 @@ def counter():
         "orange",
         "strawberry",
     ]
-
-    # ここにコードを書いてください
-
+    for fruit in fruits:
+        occurrences[fruit] = occurrences.get(fruit, 0) +1
     return occurrences
 
 print(counter())
