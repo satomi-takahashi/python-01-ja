@@ -12,8 +12,12 @@ def counter():
         "orange",
         "strawberry",
     ]
-    for fruit in fruits:
-        occurrences[fruit] = occurrences.get(fruit, 0) +1
+    fruits_order = ["banana", "apple", "orange", "grape", "melon", "kiwi", "strawberry"]  # 指定された順序
+    
+    for fruit in fruits_order:
+        occurrences[fruit] = fruits.count(fruit)
+    
     return occurrences
 
 print(counter())
+
