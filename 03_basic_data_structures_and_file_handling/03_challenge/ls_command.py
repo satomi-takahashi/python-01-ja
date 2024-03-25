@@ -18,20 +18,21 @@ def ls_command(directory):
             else:
                 files_by_extension[extension] = [file_name]
 
-        # 拡張子に対応するフォルダを作成し、ファイルを移動する
+    # 拡張子に対応するフォルダを作成し、ファイルを移動する
+    for extension, files in files_by_extension.items():
         folder_path = os.path.join(directory, extension)
 
-    # フォルダが存在しない場合は作成する
+    # フォルダが存在しない場合は作成する    
         os.makedirs(folder_path, exist_ok=True)  
         for file in files:
             source_path = os.path.join(directory, file)
             destination_path = os.path.join(folder_path, file)
-        shutil.move(source_path, destination_path)
+            shutil.move(source_path, destination_path)
 
-         # 各フォルダのファイル数を表示
-        for extension, files in files_by_extension.items():
-            print(sum(os.path.isfile(os.path.join(directory, name)) for name in os.listdir(directory)))
-            
+    # 各フォルダのファイル数を表示
+    for extension, files in files_by_extension.items():
+        print(f"拡張子'{extension}'のファイル数：{len(files)}")
+              
     return files_by_extension
 
 if __name__ == "__main__":
