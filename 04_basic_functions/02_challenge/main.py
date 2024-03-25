@@ -1,12 +1,17 @@
-def encode():
-    user_input = input("文字を入力してください：")
-    unicode_value = ord(user_input[0])
-    return chr(unicode_value).encode()
+def encode(message):
+    encoded = []
+    for c in message : 
+        encoded.append(str(ord(c)))
+    return  " ".join(encoded)
 
-def decode(encoded_data):
-    decoded_user_input = encoded_data.decode()
-    print(decoded_user_input)
+print (encode("Hello world"))
 
-encoded_data = encode()
-decode(encoded_data)
+def decode(message):
+    unicode_list = message.split()
+    result = ""
+    
+    for i in unicode_list:
+        result += chr(int(i))
+    return result
 
+print(decode("72 101 108 108 111 32 119 111 114 108 100"))  # Hello world
