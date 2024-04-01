@@ -19,7 +19,11 @@ def ls_command(directory):
                 files_by_extension[extension] = [file_name]
 
     # 拡張子に対応するフォルダを作成し、ファイルを移動する
+<<<<<<< HEAD
     for extention, files in files_by_extension.items():
+=======
+    for extension, files in files_by_extension.items():
+>>>>>>> 90357c0f2a5d876184b51f14c8568185b81a8a13
         folder_path = os.path.join(directory, extension)
 
     # フォルダが存在しない場合は作成する    
@@ -32,8 +36,13 @@ def ls_command(directory):
 
     # 各フォルダのファイル数を表示
     for extension, files in files_by_extension.items():
+<<<<<<< HEAD
         print(f"{extension}：{len(files)}")
         
+=======
+        print(f"拡張子'{extension}'のファイル数：{len(files)}")
+              
+>>>>>>> 90357c0f2a5d876184b51f14c8568185b81a8a13
     return files_by_extension
 
 if __name__ == "__main__":
