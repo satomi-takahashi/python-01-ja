@@ -7,9 +7,9 @@ def display_menu():
         "5": "5: View Library Stats",
         "6": "6: Exit App"
     }
-    print("============================================================")
-    print("Welcome to your personal books digital library!")
-    print("============================================================")
+    print("=================================================")
+    print(" Welcome to your personal books digital library!")
+    print("=================================================")
     while True:
         for key in menu:
             print(menu[key])
@@ -22,87 +22,98 @@ def display_menu():
 # [] 空のリストで初期化する
 bookshelf = []
 
-# ブックシェルフに本を追加する関数
+# 本を追加する関数
 def add_book(bookshelf):
+    while True:
+        title = input("[Add a book] Enter the title of the book: ").strip()
+        if not title:  # タイトルが空の場合はエラー表示して再入力を求める
+            print("\nTitle cannot be empty. Please try again.")
+            continue  #ループの先頭に戻る
+        
+        while True: #既読確認で無効な値が入力された場合はエラー表示して再入力を求める
+            read_status = input("Did you read it? (yes or no): ").strip()
+            if read_status in {"yes", "no"}:
+                break
+            print("\nInvalid input. Please enter 'yes' or 'no'.")
+        
+        # 本の ID を割り当てる
+        if not bookshelf:
+            new_id = 1
+        else:
+            new_id = bookshelf[-1]['book_id'] + 1
+        
+        new_book = {
+            'book_id': new_id, # IDは自動割り当て
+            'title': title,
+            'read_status': read_status
+        }
+        bookshelf.append(new_book) # ブックシェルフに本を追加
+        print("New book added successfully.")
+        break  # 本の追加が完了したらループを抜ける
 
-    # 新しい本のデータをユーザーの入力から取得して作成
-    title = input("[Add a book] Enter the title of the book: ").strip()
-    if title is None:
-        input("\nTitle cannot be empty. Try again. : ")
     
-    read_status = input("Did you read it? (yes or no): ").strip()
-    if read_status not in {"yes", "no"}:
-        input("\nInvalid input. Please enter 'yes' or 'no'. :")
-    
-    # 本の ID を割り当てる
-    if not bookshelf:
-        new_id = 1
-    else:
-        new_id = bookshelf[-1]['book_id'] + 1
-    
-    new_book = {
-        'book_id': new_id, # IDは自動割り当て
-        'title': title,
-        'read_status': read_status
-    }
-    bookshelf.append(new_book) # ブックシェルフに本を追加
-    print("New book added successfully.")
-    exit
-
 # 本を編集する関数（既存アイテムの編集）1冊の本を編集
 def edit_book(bookshelf):
     while True:
         try:
             book_id = int(input("[Edit a book] Enter the ID of the book to edit: "))
-            if 1 <= book_id <= 6:  # book_id が 1 から 6 の範囲内かどうかをチェック
-                break
-            else:
-                input("Invalid input. Please enter a valid ID (1 to 6). : ")
+            if book_id < 1:
+                print("Invalid input. Please enter a valid ID.")
+                continue
         except ValueError:
-            input("Invalid input. Please enter a valid ID (1 to 6). : ")
+            print("\nInvalid input. Please enter a valid ID.")
+            continue
 
-    if not any(book['book_id'] == book_id for book in bookshelf):
-        input("Invalid input. Please enter a valid ID. : ")
+        found_book = None
+        for book in bookshelf:
+            if book['book_id'] == book_id:
+                found_book = book
+                break
 
-    # book_id に対応する本の情報を取得し、表示する
-    for book in bookshelf:
-        if book['book_id'] == book_id:
-            print("\nBook ID:", book['book_id'])
-            print("Title:", book['title'])
-            print("Read Status:", book['read_status'])
-            break 
+        if not found_book:
+            print("\nBook not found. Please enter a valid ID.")
+            continue
 
-    while True:
-        print("\nWhat do you want to edit for this book?")
-        print("1. title")
-        print("2. read status")
-        choice = input("Enter your choice (1 or 2): ").strip()
+        print("\nBook ID:", found_book['book_id'])
+        print("Title:", found_book['title'])
+        print("Read Status:", found_book['read_status'])
+            
+        while True:
+            print("\nWhat do you want to edit for this book?")
+            print("1. Title")
+            print("2. Read status")
+            choice = input("Enter your choice (1 or 2): ").strip()
     
-        if choice == "1":
-            new_title = input("\nEnter the new title: ")
-            for book in bookshelf:
-                if book['book_id'] == book_id:
-                    book['title'] = new_title
-                    print("Title updated successfully.\n")
+            if choice == "1":
+                new_title = input("\nEnter the new title: ").strip()
+                if new_title:
+                    found_book['title'] = new_title
+                    print("\nTitle updated successfully.\n")
+                    break  # タイトルが更新されたら、編集選択画面に戻る
+                else:
+                    print("\nInvalid input. Title cannot be empty. Please try again.")
+                    continue  # タイトルが空の場合、再度タイトルの入力を求める
+            elif choice == "2":
+                new_read_status_input = input("Is the book read already? (yes = yes / no = no): ").strip()
+                if new_read_status_input in {"yes", "no"}:
+                    found_book['read_status'] = new_read_status_input
+                    print("\nRead status updated successfully.")
+                    break  # 読了ステータスが更新されたら、編集選択画面に戻る
+                else:
+                    print("\nInvalid input. Please enter 'yes' or 'no'.")
+                    continue  # 読了ステータスが無効な場合、再度読了ステータスの入力を求める
+            else:
+                print("\nInvalid input. please enter '1' or '2'.")
+                continue
+            break  # 入力値が無効な場合、編集選択画面に戻る
+        break
 
-        elif choice == "2":
-            new_read_status_input = input("Is the book read already? (yes = yes / no = no): ").strip()
-            if new_read_status_input in {"yes", "no"}:
-                new_read_status = new_read_status_input
-                for book in bookshelf:
-                    if book['book_id'] == book_id:
-                        book['read_status'] = new_read_status
-                        print("Read status updated successfully.")
-                    else:
-                        input("\nInvalid input. Please try again. : ")
-        else:
-            input("\nInvalid input. Please try again. : ")
 
 
 # 本を検索する関数（既存アイテムの検索）検索条件に一致する本（０冊以上）を一覧表示
 def search_for_books(bookshelf):
     while True:
-        print("[\nSearch for books] Choose search option:")
+        print("\n[Search for books] Choose search option:")
         print("1. Search by title")
         print("2. Search by read status")
         choice = input("\nEnter your choice (1 or 2): ").strip()
@@ -118,9 +129,9 @@ def search_for_books(bookshelf):
                     if search_results:
                         break  # 検索結果が得られたらループを抜ける
                     else:
-                        print("No matching books found. Please try again.")
+                        print("\nNo matching books found. Please try again.")
                 else:
-                    print("Invalid input. Title cannnot be empty.")
+                    print("\nInvalid input. Title cannnot be empty.")
             break  # 検索処理が完了したら外側のループを抜ける
           
         elif choice == "2":
@@ -131,12 +142,12 @@ def search_for_books(bookshelf):
                     if search_results:
                         break  # 検索結果が得られたらループを抜ける
                     else:
-                        print("No matching books found. Please try again.")
+                        print("\nNo matching books found. Please try again.")
                 else:
-                    print("Invalid input for read status. Please enter 'yes' or 'no'.")
+                    print("\nInvalid input for read status. Please enter 'yes' or 'no'.")
             break  # 検索処理が完了したら外側のループを抜ける
         else:
-            print("Invalid choice. Please enter either '1' or '2'.")
+            print("\nInvalid choice. Please enter either '1' or '2'.")
         
     print("\nSearch Results:")
     for result in search_results:
@@ -150,27 +161,32 @@ def delete_book(bookshelf):
     while True:
         try: 
             book_id = int(input("\n [Delete a book] Enter the book ID to delete: "))
-            found = False
+            found = False # IDが見つからなかった場合
             for book in bookshelf:
                 if book['book_id'] == book_id:
                     # 削除を確認
-                    print(f"\nAre you sure to delete this book? \n(Book ID: {book_id}, Title: {book['title']}, Read Status: {book['read_status']})")
-                    confirmation = input("Enter 'YES' to confirm deletion, 'NO' to cancel: ").strip().lower()
-                    if confirmation == "yes":
-                        # 本を削除
-                        bookshelf.remove(book)
-                        print("The book has been deleted successfully.")
-                        found = True
-                    elif confirmation == "no":
-                        print("[Delete a book] is canceled.")
-                        found = True
-                    else:
-                        print("Invalid input. Please enter 'yes' or 'no'.")
-                    break  # ループを中断して新しい本のIDの入力を促す
+                    print(f"\nAre you sure to delete this book? \n\nBook ID: {book_id} \nTitle: {book['title']} \nRead Status: {book['read_status']}\n")
+                    while True:
+                        confirmation = input("\nEnter 'YES' to confirm deletion, 'NO' to cancel: ").strip().lower()
+                        if confirmation == "yes":
+                            # 本を削除
+                            bookshelf.remove(book)
+                            print("\nThe book has been deleted successfully.")
+                            found = True #yesが入力された場合
+                            break
+                        elif confirmation == "no":
+                            print("\n[Delete a book] is canceled.")
+                            found = True #noが入力された場合
+                            break
+                        else:
+                            print("\nInvalid input. Please enter 'yes' or 'no'.")
+                            continue # ループを中断してyes or no の入力を促す
+                    break
             if not found:
-                print("Invalid book ID. Please enter a valid book ID.")
+                print("\nInvalid book ID. Please enter a valid book ID.")
+            break
         except ValueError:
-            print("Invalid input. Book ID has to be a number.")
+            print("\nInvalid input. Book ID has to be a number.")
 
 
 # ブックシェルフの統計情報を表示する関数：ブックシェルフ内の本の総数、既読の本の数、未読の本の数を表示
